@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-10">
+        <h1 class="display-4">@ViewBag.Plan.Title</h1>
+    </div>
+    <div class="col-sm-2">
+        @{
+            if(ViewBag.Plan.CoordinatorId == ViewBag.User.UserId){
+                <a href="/delete/@ViewBag.Plan.PlanId" class="btn btn-danger">Delete</a>
+            }
+            bool isGoing = false;
+            foreach(var attendee in ViewBag.Plan.Attendees){
+                 if(attendee.UserId == ViewBag.User.UserId){
+                    isGoing = true;
+                }
+
+                 if (isGoing){
+                    <a href="/leave/@ViewBag.Plan.PlanId" class="btn btn-warning">Leave</a>
+                }
+                else{
+                    <a href="/join/@ViewBag.Plan.PlanId" class="btn btn-info">Join</a>                    
+                }
+            }
+
+        }
+        <a href=""></a>
+    </div>
+</div>
+<div class="ml-5">
+    <h3>Event Coordinator: <span class="font-weight-light">@ViewBag.Plan.Coordinator.Name</span></h3>
+    
+    <h3>Description: </h3>
+    <p class="ml-4">@ViewBag.Plan.Description</p>
+        
+    <h3>Participants: </h3>
+    <ul>
+        @foreach(var attendee in ViewBag.Plan.Attendees){
+            <li>@attendee.User.Name</li>
+        }
+    </ul>
+</div>

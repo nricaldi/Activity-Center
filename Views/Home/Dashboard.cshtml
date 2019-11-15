@@ -1,0 +1,50 @@
+<h1 class="display-4">Welcome @ViewBag.User.Name</h1>
+
+ <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Activity</th>
+                <th scope="col">Date and Time</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Event Coordinator</th>
+                <th scope="col">No. of Participants</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var plan in ViewBag.AllPlans){
+        
+                <tr>
+                    <th scope="row"><a href="plan/@plan.PlanId">@plan.Title</a></th>
+                    <td>@plan.GetDate() at @plan.GetTime() </td>
+                    <td>@plan.Duration @plan.DurationType</td>
+                    <td>@plan.Coordinator.Name</td>
+                    <td>@plan.Attendees.Count</td>
+
+                    @if(plan.CoordinatorId == ViewBag.User.UserId){
+                        <td><a href="/delete/@plan.PlanId">Delete</a></td>
+                    }
+                    else{
+                        bool isGoing = false;
+                        foreach(var attendee in plan.Attendees){
+                            if(attendee.UserId == ViewBag.User.UserId){
+                                isGoing = true;
+                            }
+                        }
+                        if (isGoing){
+                            <td><a href="/leave/@plan.PlanId">Leave</a></td>
+                        }
+                        else{
+                            <td><a href="/join/@plan.PlanId">Join</a></td>
+                        }
+                    }
+                    
+                </tr>
+                
+            }
+
+        </tbody>
+    </table>
+    <div class="text-right">
+        <a href="/addPlan" class="btn btn-outline-primary">New Activity</a>
+    </div>
